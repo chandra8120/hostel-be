@@ -28,8 +28,7 @@ const createRoom = async (req, res) => {
     }
   };
   
-
-// ✅ Get all Rooms
+//  Get all Rooms
  const getAllRooms = async (req, res) => {
     try {
         const rooms = await Room.find();
@@ -39,7 +38,7 @@ const createRoom = async (req, res) => {
     }
 };
 
-// ✅ Get a Room by ID
+//  Get a Room by ID
  const getRoomById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -55,7 +54,7 @@ const createRoom = async (req, res) => {
     }
 };
 
-// ✅ Update a Room
+//  Update a Room
  const updateRoom = async (req, res) => {
     try {
         const { id } = req.params;
@@ -71,7 +70,7 @@ const createRoom = async (req, res) => {
     }
 };
 
-// ✅ Delete a Room
+//  Delete a Room
  const deleteRoom = async (req, res) => {
     try {
         const { id } = req.params;
@@ -87,10 +86,27 @@ const createRoom = async (req, res) => {
     }
 };
 
+const getRoomsByStatus = async (req, res) => {
+    try {
+      const { status } = req.params;
+  
+      if (!["available", "occupied"].includes(status)) {
+        return res.status(400).json({ message: "Invalid status value" });
+      }
+  
+      const rooms = await Room.find({ status });
+      res.status(200).json(rooms);
+    } catch (error) {
+      console.error("Error fetching rooms by status:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  };
+
 export default {
     createRoom,
     getAllRooms,
     getRoomById,
     deleteRoom,
-    updateRoom
+    updateRoom,
+    getRoomsByStatus
 }

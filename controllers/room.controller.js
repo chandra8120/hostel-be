@@ -32,6 +32,9 @@ const createRoom = async (req, res) => {
  const getAllRooms = async (req, res) => {
     try {
         const rooms = await Room.find();
+        if(!rooms.length){
+          return res.status(404).json({message:"No data found !!"})
+        }
         res.status(200).json(rooms);
     } catch (error) {
         res.status(500).json({ message: "Error fetching rooms", error: error.message });
